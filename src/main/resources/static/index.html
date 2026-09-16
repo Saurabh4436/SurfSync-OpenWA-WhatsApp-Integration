@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SurfSync WhatsApp Dashboard</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">S</div>
+
+            <div class="brand-text">
+                <h2>SurfSync</h2>
+                <span>WhatsApp Integration</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section-title">
+            WORKSPACE
+        </div>
+
+        <nav>
+
+            <button class="nav-item active" type="button">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </button>
+
+            <button
+                    class="nav-item"
+                    type="button"
+                    onclick="document.getElementById('inboxSection').scrollIntoView({behavior:'smooth'})"
+            >
+                <span class="nav-icon">▤</span>
+                <span>Inbox</span>
+            </button>
+
+            <button
+                    class="nav-item"
+                    type="button"
+                    onclick="document.getElementById('inboxSection').scrollIntoView({behavior:'smooth'})"
+            >
+                <span class="nav-icon">◷</span>
+                <span>History</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-status">
+
+            <div class="sidebar-status-dot"></div>
+
+            <div>
+                <strong>OpenWA</strong>
+                <span>Local Integration</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <div class="eyebrow">
+                    WHATSAPP AUTOMATION
+                </div>
+
+                <h1>WhatsApp Dashboard</h1>
+
+                <p>
+                    Monitor your WhatsApp session, send messages
+                    and manage incoming conversations.
+                </p>
+            </div>
+
+            <button
+                    class="refresh-btn"
+                    type="button"
+                    onclick="loadDashboard()"
+            >
+                <span>↻</span>
+                Refresh
+            </button>
+
+        </header>
+
+        <section class="status-grid">
+
+            <div class="status-card">
+
+                <div class="card-icon status-green">
+                    <span>✓</span>
+                </div>
+
+                <div class="status-content">
+                    <span class="label">
+                        Session Status
+                    </span>
+
+                    <strong id="sessionStatus">
+                        Checking...
+                    </strong>
+
+                    <small>
+                        WhatsApp connection
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <div class="card-icon status-blue">
+                    <span>◉</span>
+                </div>
+
+                <div class="status-content">
+                    <span class="label">
+                        WhatsApp Number
+                    </span>
+
+                    <strong
+                            id="phoneNumber"
+                            class="phone-value"
+                    >
+                        -
+                    </strong>
+
+                    <small>
+                        Connected account
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <div class="card-icon status-purple">
+                    <span>⚙</span>
+                </div>
+
+                <div class="status-content">
+                    <span class="label">
+                        OpenWA Engine
+                    </span>
+
+                    <strong id="engineStatus">
+                        Checking...
+                    </strong>
+
+                    <small>
+                        Messaging engine
+                    </small>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="section-badge">
+                        MESSAGE
+                    </div>
+
+                    <h2>
+                        Send WhatsApp Message
+                    </h2>
+
+                    <p>
+                        Send a text message through the connected
+                        OpenWA session.
+                    </p>
+                </div>
+
+                <div class="panel-header-icon">
+                    💬
+                </div>
+
+            </div>
+
+
+            <form id="sendMessageForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                                type="text"
+                                id="phone"
+                                placeholder="919XXXXXXXXX"
+                                autocomplete="off"
+                                required
+                        >
+
+                        <small>
+                            Include country code without + or spaces.
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group form-group-wide">
+
+                        <label for="message">
+                            Message
+                        </label>
+
+                        <textarea
+                                id="message"
+                                rows="5"
+                                placeholder="Type your message here..."
+                                required
+                        ></textarea>
+
+                        <small>
+                            Your message will be sent through OpenWA.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-footer">
+
+                    <span class="security-note">
+                        🔒 Message sent through secure local integration
+                    </span>
+
+                    <button
+                            type="submit"
+                            class="send-btn"
+                            id="sendBtn"
+                    >
+                        <span>➤</span>
+                        Send Message
+                    </button>
+
+                </div>
+
+
+                <div
+                        id="sendResult"
+                        class="result"
+                ></div>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================= INBOX ================= -->
+        <section
+                class="panel inbox-panel"
+                id="inboxSection"
+        >
+
+            <div class="panel-header">
+
+                <div>
+                    <div class="section-badge">
+                        INBOX
+                    </div>
+
+                    <h2>
+                        Recent Messages
+                    </h2>
+
+                    <p>
+                        Latest incoming and outgoing messages
+                        stored in MySQL.
+                    </p>
+                </div>
+
+                <button
+                        class="small-btn"
+                        type="button"
+                        onclick="loadMessages()"
+                >
+                    <span>↻</span>
+                    Refresh
+                </button>
+
+            </div>
+
+
+            <div class="inbox-info">
+
+                <div class="info-item">
+                    <span class="info-dot incoming-dot"></span>
+                    Incoming
+                </div>
+
+                <div class="info-item">
+                    <span class="info-dot outgoing-dot"></span>
+                    Outgoing
+                </div>
+
+                <div class="info-item">
+                    <span>🗄</span>
+                    MySQL History
+                </div>
+
+            </div>
+
+
+            <div
+                    id="messagesContainer"
+                    class="messages"
+            >
+
+                <div class="loading">
+
+                    <div class="loading-spinner"></div>
+
+                    <span>
+                        Loading messages...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FOOTER ================= -->
+        <footer class="footer">
+
+            <span>
+                SurfSync Infotech
+            </span>
+
+            <span class="footer-separator">
+                •
+            </span>
+
+            <span>
+                OpenWA WhatsApp Integration
+            </span>
+
+            <span class="footer-separator">
+                •
+            </span>
+
+            <span>
+                Spring Boot + MySQL
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="/app.js"></script>
+
+</body>
+</html>
